@@ -31,7 +31,9 @@ class MadlibForm extends Component {
 
   constructor(props) {
     super(props)
+
     this.state = {
+      completedForm: false,
       color: '',
       pluralNoun: '',
       adjectiveOne: '',
@@ -52,6 +54,11 @@ class MadlibForm extends Component {
     
   }
 
+  handleSubmit = function(event) {
+    this.setState({completedForm: true});
+    event.preventDefault();
+  }.bind(this);
+
   render() {
   
       this.inputData = [
@@ -64,25 +71,26 @@ class MadlibForm extends Component {
         {placeholder: 'Noun', prop: 'nounOne', state: this.state.nounOne},
         {placeholder: 'Number', prop: 'numberOne', state: this.state.numberOne},
         {placeholder: 'Number', prop: 'numberTwo', state: this.state.numberTwo}
-
-
-        //adjective
-        //nount
-        //number
-        //number
       ]
 
     return (
       <div className="card-wrapper">
         <Card>
-          <Row style={{textAlign: 'center', color: 'White'}}>
-            {
-                _.map(this.inputData, (data, indexKey) => {
-                  return <MadLibInput key = {indexKey} index = {indexKey + 1} state = {data.state} placeholder={data.placeholder} onChange = {this.handleChange({inputTitle: data.prop})}/>
-              })
-            }
-          
-        </Row>
+          <form onSubmit={this.handleSubmit} id = "madlib-form">
+            <Row style={{textAlign: 'center', color: 'White'}}>
+              {
+                  _.map(this.inputData, (data, indexKey) => {
+                    return <MadLibInput key = {indexKey} index = {indexKey + 1} state = {data.state} placeholder={data.placeholder} onChange = {this.handleChange({inputTitle: data.prop})}/>
+                })
+              }
+            
+          </Row>
+          <Row>
+              <Col md="12" className= "button-wrapper">
+                <input type="submit" className="generate-button" value = "Generate MadLib"/>
+              </Col>
+          </Row>
+        </form>
       </Card>
     </div>
       
